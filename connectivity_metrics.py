@@ -223,7 +223,7 @@ def export_connectivity_outputs(
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-    from pedestraian_nodes import LOCATIONS, load_graph
+    from pedestrian_nodes import LOCATIONS, load_graph
     from friction_weighting import add_friction_weights
     from planned_vs_actual import random_od_pairs, add_planned_weights, compare_od_pairs
 
@@ -246,7 +246,7 @@ if __name__ == "__main__":
     for loc_name in LOCATIONS:
         G = load_graph(loc_name)
         if G is None:
-            log.warning(f"No cached graph for '{loc_name}' — run pedestraian_nodes.py first. Skipping.")
+            log.warning(f"No cached graph for '{loc_name}' — run pedestrian_nodes.py first. Skipping.")
             continue
 
         print(f"\n{'=' * 60}\n  {loc_name}\n{'=' * 60}")

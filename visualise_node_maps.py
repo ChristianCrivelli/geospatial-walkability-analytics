@@ -2,7 +2,7 @@
 visualise_node_maps.py
 ======================
 Visualise the pedestrian walk-network node maps for every study location
-defined in pedestraian_nodes.py.
+defined in pedestrian_nodes.py.
 
 TWO modes are supported:
 
@@ -63,10 +63,10 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 
 # ─────────────────────── your project module ─────────────────────────────────
-# pedestraian_nodes.py must be on the Python path (put it next to this script
+# pedestrian_nodes.py must be on the Python path (put it next to this script
 # or add its directory to sys.path).
 try:
-    from pedestraian_nodes import (
+    from pedestrian_nodes import (
         LOCATIONS,
         fetch_walk_graph,
         filter_pedestrian_edges,
@@ -138,7 +138,7 @@ def _get_graph(name: str, cfg: dict):
     if G is None:
         if MODE == "cached":
             raise FileNotFoundError(
-                f"No cached graph for '{name}'. Run pedestraian_nodes.py first."
+                f"No cached graph for '{name}'. Run pedestrian_nodes.py first."
             )
         log.info(f"[{name}] Downloading graph …")
         # Download

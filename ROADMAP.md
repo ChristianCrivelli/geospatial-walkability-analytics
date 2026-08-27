@@ -18,7 +18,7 @@ elevation enrichment, grade calculation, GraphML/GeoPackage/CSV export,
 and a first static visualization — all five study locations (Maastricht,
 Matosinhos, Sabancı University, Lanaken, Mindelo) processed and cached.
 
-_Code: `pedestraian_nodes.py`, `visualise_node_maps.py`_
+_Code: `pedestrian_nodes.py`, `visualise_node_maps.py`_
 
 ## Phase 2 — The True Walkability Algorithm (in progress)
 
@@ -31,23 +31,25 @@ depends on the graph the previous step produced:
    (`planned_vs_actual.py` — random O-D sampling + per-pair comparison, run against all 5 cities; POI-based sampling deferred to #5)
 3. ✅ [**003 — Connectivity metrics**](https://github.com/ChristianCrivelli/city_walkability/issues/3)
    (`connectivity_metrics.py` — circuity reusing #2's O-D sample, betweenness centrality with exact/k-sample split by graph size, top-10 choke points per city)
-4. 🔲 [**004 — Composite True Walkability Index**](https://github.com/ChristianCrivelli/city_walkability/issues/4)
+4. ✅ [**004 — Composite True Walkability Index**](https://github.com/ChristianCrivelli/city_walkability/issues/4)
+   (`true_walkability_index.py` — 4 components: friction_ratio, median_circuity, dead_end_density (new), friction_savings_pct; min-max normalized across the 5 cities, equal-weighted, `100*(1-difficulty_score)`; run against all 5 cities. Follow-up after close: median_circuity was scale-biased against small study areas — fixed with a distance-detrended `median_excess_circuity` variant, exported alongside the original rather than replacing it. See REPORT.md.)
 
 Running alongside Phase 2, not blocking it:
 
-- 🔲 [**005 — Personal-path validation**](https://github.com/ChristianCrivelli/city_walkability/issues/5)
-  — anchor the comparison in real, lived routes as soon as start/end
-  points are supplied.
+- ✅ [**005 — Personal-path validation**](https://github.com/ChristianCrivelli/city_walkability/issues/5)
+  (`personal_path_validation.py` — 5 real user-supplied routes run through the same Planned-vs-Actual comparison as #2. 3 of 5 show zero Planned/Actual divergence, a useful contrast with #2's random-sample averages; 2 of 5 carry real data-availability gaps — Lanaken's destination is outside the cached network entirely, Matosinhos's is ~390-610m outside it — run anyway with the gap reported, not hidden. See REPORT.md.)
 
 ## Phase 3 — Scale & polish (after Phase 2 stabilizes)
 
 - 🔲 [**006 — Generalize to an arbitrary city**](https://github.com/ChristianCrivelli/city_walkability/issues/6)
   — deliberately sequenced last; see that issue for why.
 - 🔲 [**007 — Interactive visualization**](https://github.com/ChristianCrivelli/city_walkability/issues/7)
-- 🟡 [**008 — Repo hygiene & portfolio polish**](https://github.com/ChristianCrivelli/city_walkability/issues/8)
-  — data-storage decision made (leave the ~108MB as-is); filename typo fix
-  (`pedestraian_nodes.py` → `pedestrian_nodes.py`) and `METHODOLOGY.md`
-  still open, the latter waiting on #3/#4 to stabilize.
+- ✅ [**008 — Repo hygiene & portfolio polish**](https://github.com/ChristianCrivelli/city_walkability/issues/8)
+  — data-storage decision recorded (leave the ~108MB as-is); filename typo
+  fixed (`pedestraian_nodes.py` → `pedestrian_nodes.py`, all imports
+  updated); [`METHODOLOGY.md`](METHODOLOGY.md) written, collecting every
+  documented judgment call from #1–#5 in one place now that they've all
+  stabilized.
 
 ## Phase 4 — The report
 
@@ -62,4 +64,10 @@ A few open methodology questions block clean progress on Phase 2 and are
 tracked in detail in REPORT.md rather than buried in issue text:
 what "Planned" means precisely, whether/how municipal data factors in,
 and how the infrastructure-penalty and index weights get chosen and
-justified.
+justified (#4's equal weighting is a documented first pass, not derived —
+a sensitivity check is on the report's open-questions list).
+
+With #001-#005 all done, Phase 2 (including the personal-path validation
+running alongside it) is now feature-complete. #008 (repo hygiene) is
+also done. Phase 3's remaining items — #006 (generalize to an arbitrary
+city) and #007 (interactive visualization) — are next up.

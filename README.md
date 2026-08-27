@@ -59,7 +59,7 @@ open to refinement — see [REPORT.md](REPORT.md).
 ### Pipeline
 
 ```
-pedestraian_nodes.py        Phase 1 — OSMnx graph extraction, pedestrian-
+pedestrian_nodes.py        Phase 1 — OSMnx graph extraction, pedestrian-
                              tag filtering, elevation enrichment (Open-
                              Elevation API), grade calculation, export to
                              GraphML / GeoPackage / CSV, with caching.
@@ -113,7 +113,7 @@ API (elevation data, no key required).
 
 ```bash
 pip install -r requirements.txt
-python pedestraian_nodes.py       # Phase 1 — builds/caches the 5 study graphs
+python pedestrian_nodes.py       # Phase 1 — builds/caches the 5 study graphs
 python friction_weighting.py      # Phase 2 step 1 — friction-weights them
 python visualise_node_maps.py     # static PNG maps
 ```

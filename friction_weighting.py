@@ -2,7 +2,7 @@
 friction_weighting.py
 ======================
 Phase 2 / Step 1 of the True Walkability pipeline: convert the enriched
-pedestrian graph produced by `pedestraian_nodes.py` (OSM tags + elevation
+pedestrian graph produced by `pedestrian_nodes.py` (OSM tags + elevation
 + grade) into a friction-weighted graph suitable for realistic routing.
 
 This implements the Friction Factor formula from the project plan:
@@ -43,7 +43,7 @@ uses instead of raw `length`.
    report") before treating them as more than a first pass.
 
 Bug fixed while writing this module: the original edge filter in
-`pedestraian_nodes.py` (`bool(data.get("sidewalk"))`) treated
+`pedestrian_nodes.py` (`bool(data.get("sidewalk"))`) treated
 `sidewalk="no"` as a truthy "sidewalk present" signal, because it's a
 non-empty string. This is a real, present-in-data bug — Mindelo alone
 has 30 edges explicitly tagged `sidewalk=no`. Fixed here via
@@ -228,12 +228,12 @@ def export_friction_graph(G: nx.MultiDiGraph, name: str, base_dir: str = "locati
 if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-    from pedestraian_nodes import LOCATIONS, load_graph
+    from pedestrian_nodes import LOCATIONS, load_graph
 
     for loc_name in LOCATIONS:
         G = load_graph(loc_name)
         if G is None:
-            log.warning(f"No cached graph for '{loc_name}' — run pedestraian_nodes.py first. Skipping.")
+            log.warning(f"No cached graph for '{loc_name}' — run pedestrian_nodes.py first. Skipping.")
             continue
 
         print(f"\n{'=' * 60}\n  {loc_name}\n{'=' * 60}")
