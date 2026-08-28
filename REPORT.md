@@ -17,13 +17,14 @@ issues, not a duplicate of issue tracking.
 
 ## Open questions — need a decision before the report can be finalized
 
-**Who is the report actually for?** Still undecided. Options discussed:
-a technical audience (methodology-first, findings second) vs. a
-planner/policy audience (findings first, methodology in an appendix).
-This also determines whether "interactive element" (#7) means a Folium
-map dropped in the repo or a real dashboard — very different amounts of
-work. #2 and #3 now have real numbers (see Findings below) — worth
-revisiting this question sooner rather than after #4 too.
+**Who is the report actually for? — decided: technical-first.** The
+final written report (Phase 4) leads with methodology and the engineering
+decisions, findings second — matching the project's own "documented
+judgment call, not a citation" rigor and its role as a technical
+portfolio piece. This doesn't change the README, which keeps running
+planner and technical sections side by side as it already does; it
+settles the *report's* lead voice specifically. Deciding this also
+unblocked #7's scope call directly below.
 
 **What does "Planned" walkability mean, precisely?** Implemented for #2
 as the working assumption: derive it from OSM too (naive, no penalty),
@@ -203,6 +204,28 @@ decided and why*, taken now that #1–#5 have all stabilized.
   verified coordinate at all — no source gave a precise address, so it's
   placed near campus centre per the user's description and flagged as
   unverified, not presented as precise.
+
+- **#7 interactive visualization: Folium-only, no dashboard — decided
+  alongside the report-audience call above.** The issue's acceptance
+  criteria required recording this before starting any stretch scope;
+  with the report now technical-first, a live-toggle dashboard (the
+  stretch option) buys little a static report figure doesn't already
+  cover, so the minimum-viable scope stands as the whole scope: one
+  self-contained Folium HTML map per city, no server, no build step.
+  Edges are coloured by `infra_tier` (see METHODOLOGY.md) as an ORDINAL
+  single-hue ramp — light = easiest, dark = hardest — rather than
+  unordered categorical hues, since the tiers have a real best-to-worst
+  order and an ordinal ramp reads as a difficulty gradient at a glance;
+  validated with the project's dataviz-skill palette validator
+  (`--ordinal`, all checks pass). Steps-tagged edges are drawn dashed on
+  top of their base-tier colour rather than getting their own hue, since
+  stairs are a qualitatively different obstacle (impassable, not just
+  "more friction") from the traffic-exposure severity the ramp encodes.
+  Choke points reuse #3's already-exported `betweenness_top10.csv`
+  directly rather than recomputing — same "reuse a validated result,
+  don't risk a second computation silently diverging" principle #4
+  applied to #1-#3's outputs. See Findings below for output sizes and one
+  verification caveat.
 
 ---
 
@@ -429,3 +452,39 @@ decided and why*, taken now that #1–#5 have all stabilized.
   parish-boundary gap, partly ordinary snap distance). Both are flagged
   in `personal_path_validation.csv`'s snap-distance columns, not silently
   averaged into a clean-looking number.
+
+- **#7 interactive maps built for all 5 cities** (`interactive_visualization.py`
+  → `figures/interactive/`). Output sizes track edge count directly, as
+  expected for an embedded-GeoJSON approach: Matosinhos 9.7MB (39,988
+  edges), Maastricht 8.8MB (35,090), Lanaken 2.3MB (9,614), Mindelo 351KB
+  (1,320), Sabancı 236KB (958). Infrastructure-tier mix per city (dedicated
+  / low / moderate / high-traffic-no-sidewalk, plus the steps modifier)
+  matches each city's already-known friction profile from #1/#4 — e.g.
+  Matosinhos shows the largest moderate+high-traffic-no-sidewalk share
+  (18.1% combined) of any city, consistent with its lowest walkability
+  score and the infrastructure-tagging explanation given in the #4
+  follow-up above, not a new finding but a useful visual confirmation of
+  an already-quantified one.
+
+  **Verification caveat, worth stating plainly**: this sandbox's network
+  egress is restricted to an allowlist (the same restriction that blocked
+  direct Nominatim access for #5), which blocks the public CDNs
+  (jsdelivr, cdnjs) Folium's standard output loads Leaflet.js and
+  OpenStreetMap tiles from — so the maps could not be visually rendered
+  and screenshotted from inside this environment (confirmed via a
+  headless-browser check: title and legend, which are inline HTML/CSS,
+  rendered correctly; the Leaflet-dependent map layer did not, with a
+  `L is not defined` error tracing directly to the blocked CDN requests,
+  not a code bug). Verified instead by structural validation: parsed each
+  output file's embedded GeoJSON and confirmed feature counts match
+  `add_friction_weights`'s own edge counts exactly (e.g. Sabancı: 958
+  features for 958 edges, 70 `steps: true` features matching the logged
+  70 `dedicated+steps` edges, 10 choke-point markers for the top-10 CSV).
+  The CDN URLs themselves (jsdelivr, cdnjs, code.jquery.com) are the
+  same ones the Artifact tool's own CDN allowlist recognizes — ordinary,
+  widely-reachable public CDNs any normal browser on the user's own
+  machine will load without issue; the failure is specific to this
+  sandbox's egress policy, not the output. Worth a real look on a normal
+  machine before treating this as fully closed out, since a headless
+  structural check is a weaker guarantee than actually seeing the map
+  render.

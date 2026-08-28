@@ -43,7 +43,13 @@ Running alongside Phase 2, not blocking it:
 
 - 🔲 [**006 — Generalize to an arbitrary city**](https://github.com/ChristianCrivelli/city_walkability/issues/6)
   — deliberately sequenced last; see that issue for why.
-- 🔲 [**007 — Interactive visualization**](https://github.com/ChristianCrivelli/city_walkability/issues/7)
+- ✅ [**007 — Interactive visualization**](https://github.com/ChristianCrivelli/city_walkability/issues/7)
+  (`interactive_visualization.py` — Folium-only scope, decided alongside
+  the report's technical-first audience call; one self-contained HTML map
+  per city in `figures/interactive/`, edges coloured by `infra_tier` as an
+  ordinal ramp, steps drawn dashed, #3's top-10 choke points marked with
+  popups. Rendering verified structurally, not visually, from this
+  environment — see REPORT.md's caveat.)
 - ✅ [**008 — Repo hygiene & portfolio polish**](https://github.com/ChristianCrivelli/city_walkability/issues/8)
   — data-storage decision recorded (leave the ~108MB as-is); filename typo
   fixed (`pedestraian_nodes.py` → `pedestrian_nodes.py`, all imports
@@ -55,8 +61,8 @@ Running alongside Phase 2, not blocking it:
 
 Not an issue — tracked as running notes in [`REPORT.md`](REPORT.md) as we
 go, then written up once Phase 2's numbers exist to report on. Audience
-and format (written report vs. interactive companion, see #7) still
-open — see REPORT.md.
+decided: technical-first (methodology leads, findings second) — see
+REPORT.md. The written report itself is not yet drafted.
 
 ## Explicitly not yet decided
 
@@ -68,6 +74,6 @@ justified (#4's equal weighting is a documented first pass, not derived —
 a sensitivity check is on the report's open-questions list).
 
 With #001-#005 all done, Phase 2 (including the personal-path validation
-running alongside it) is now feature-complete. #008 (repo hygiene) is
-also done. Phase 3's remaining items — #006 (generalize to an arbitrary
-city) and #007 (interactive visualization) — are next up.
+running alongside it) is now feature-complete. #007 and #008 are also
+done. #006 (generalize to an arbitrary city) is the one item left in
+Phase 3, followed by actually drafting Phase 4's report.
